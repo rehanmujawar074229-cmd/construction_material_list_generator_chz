@@ -1,0 +1,174 @@
+import React, { useState, useEffect } from 'react';
+import Header from './components/Header';
+import ControlPanel from './components/ControlPanel';
+import BillPreview from './components/BillPreview';
+import AddMaterialModal from './components/AddMaterialModal';
+import HistoryModal from './components/HistoryModal';
+import { generatePdf } from './utils/pdfGenerator';
+import { shareBill } from './utils/shareHelper';
+
+export interface Material {
+  id: number;
+  name: string;
+  size: string;
+  quantity: number;
+}
+
+export interface SavedBill {
+  customerName: string;
+  listNumber: string;
+  date: string;
+  materials: Material[];
+}
+
+// Helper function to get today's date formatted
+const getTodaysDate = () => {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+// Helper function to generate a new list number
+const generateNewListNumber = () => `IRH${Math.floor(100000 + Math.random() * 900000)}`;
+
+function App() {
+  const [customerName, setCustomerName] = useState('');
+  const [listNumber, setListNumber] = useState(generateNewListNumber());
+  const [date, setDate] = useState(getTodaysDate());
+  const [materials, setMaterials] = useState<Material[]>([]);
+  
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [history, setHistory] = useState<SavedBill[]>([]);
+
+  useEffect(() => {
+    try {
+      const savedHistory = localStorage.getItem('materialListsHistory');
+      if (savedHistory) {
+        setHistory(JSON.parse(savedHistory));
+      }
+    } catch (error) {
+      console.error("Failed to load history from localStorage", error);
+      setHistory([]);
+    }
+  }, []);
+
+  const updateHistory = (newHistory: SavedBill[]) => {
+    try {
+      setHistory(newHistory);
+      localStorage.setItem('materialListsHistory', JSON.stringify(newHistory));
+    } catch (error) {
+      console.error("Failed to save history to localStorage", error);
+    }
+  };
+
+  const handleNewList = () => {
+    setCustomerName('');
+    setListNumber(generateNewListNumber());
+    setDate(getTodaysDate());
+    setMaterials([]);
+  };
+
+  const addMaterial = (material: Omit<Material, 'id'>) => {
+    setMaterials(prev => [...prev, { ...material, id: Date.now() }]);
+  };
+
+  const deleteMaterial = (id: number) => {
+    setMaterials(prev => prev.filter(material => material.id !== id));
+  };
+  
+  const handleSave = () => {
+    const currentBill: SavedBill = { customerName, listNumber, date, materials };
+    const historyIndex = history.findIndex(item => item.listNumber === listNumber);
+    
+    let newHistory = [...history];
+    if (historyIndex > -1) {
+      newHistory[historyIndex] = currentBill;
+    } else {
+      newHistory.unshift(currentBill);
+    }
+    
+    updateHistory(newHistory);
+    alert(`List "${listNumber}" has been saved successfully!`);
+  };
+
+  const handleLoadFromHistory = (bill: SavedBill) => {
+    setCustomerName(bill.customerName);
+    setListNumber(bill.listNumber);
+    setDate(bill.date);
+    setMaterials(bill.materials);
+    setIsHistoryModalOpen(false);
+  };
+  
+  const handleDeleteFromHistory = (billNumber: string) => {
+    const newHistory = history.filter(item => item.listNumber !== billNumber);
+    updateHistory(newHistory);
+  };
+
+  const handleExportPdf = () => {
+    generatePdf({ customerName, listNumber, date, materials });
+  };
+
+  const handleShare = () => {
+    shareBill({ customerName, listNumber, date, materials });
+  };
+
+  return (
+    <div className="font-sans p-4 md:p-8">
+      <div className="max-w-4xl mx-auto">
+        <Header />
+        <div className="text-center my-6">
+           <button
+            onClick={handleNewList}
+            className="bg-purple-600 text-white font-semibold py-2 px-8 rounded-lg shadow-sm hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+          >
+            New List
+          </button>
+        </div>
+        <main className="grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-1 space-y-6">
+            <ControlPanel
+              customerName={customerName}
+              setCustomerName={setCustomerName}
+              listNumber={listNumber}
+              setListNumber={setListNumber}
+              date={date}
+              setDate={setDate}
+              onAddMaterialClick={() => setIsAddModalOpen(true)}
+              onSave={handleSave}
+              onExportPdf={handleExportPdf}
+              onShare={handleShare}
+              onHistoryClick={() => setIsHistoryModalOpen(true)}
+              isBillEmpty={materials.length === 0}
+            />
+          </div>
+          <div className="md:col-span-2">
+            <BillPreview
+              customerName={customerName}
+              listNumber={listNumber}
+              date={date}
+              materials={materials}
+              onDeleteMaterial={deleteMaterial}
+            />
+          </div>
+        </main>
+      </div>
+      <AddMaterialModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAddMaterial={addMaterial}
+      />
+      <HistoryModal
+        isOpen={isHistoryModalOpen}
+        onClose={() => setIsHistoryModalOpen(false)}
+        history={history}
+        onLoad={handleLoadFromHistory}
+        onDelete={handleDeleteFromHistory}
+      />
+    </div>
+  );
+}
+
+export default App;

@@ -1,0 +1,95 @@
+export interface MaterialOption {
+  name: string;
+  sizes?: string[];
+}
+
+export interface MaterialCategory {
+  category: string;
+  items: MaterialOption[];
+}
+
+export const materialData: MaterialCategory[] = [
+  {
+    category: "SWR Material",
+    items: [
+      { name: "Pipe", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Plain Bend", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Door Bend", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Door Tee", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Coller", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Shoe Bend", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Nahani Trap", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Plain Y", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Door Y", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Rubber Ring", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "SWR Clip", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Cleaning Pipe", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "SWR End cap", sizes: ["2 1/2\"", "4\"", "6\""] },
+      { name: "Gas Cap", sizes: ["2 1/2\"", "4\""] },
+      { name: "SWR Reducer", sizes: ["4\"x2 1/2\"", "6\"x4\""] },
+      { name: "SWR Reducing Tee", sizes: ["4\"x2 1/2\""] },
+      { name: "SWR Reducing Door Tee", sizes: ["4\"x2 1/2\""] },
+      { name: "Multi Floor Trap", sizes: ["4\"x2 1/2\""] },
+    ],
+  },
+  {
+    category: "CPVC Material",
+    items: [
+      { name: "Pipe", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Elbow", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Tee", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Coller", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "MTA", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "FTA", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "End Cap", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Shoe Bend", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Union", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Ball Valve", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "By Pass Bend", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Brass MTA", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Brass FTA", sizes: ["3/4\"", "1\"", "1 1/4\"", "1 1/2\"", "2\""] },
+      { name: "Br. Elbow 3/4\"x1/2\"", sizes: [] },
+      { name: "Br. Tee 3/4\"x1/2\"", sizes: [] },
+      { name: "Br. FTA 3/4\"x1/2\"", sizes: [] },
+      { name: "Br. MTA 3/4\"x1/2\"", sizes: [] },
+      { name: "Br. Elbow 1\"x1/2\"", sizes: [] },
+      { name: "Br. Tee 1\"x1/2\"", sizes: [] },
+      { name: "CPVC Bushing", sizes: ["1\"x3/4\"", "1 1/4x3/4\"", "1 1/2x3/4\"", "1 1/2x1\""] },
+      { name: "Transition Bushing", sizes: ["3/4\"x3/4\"", "1\"x1\"", "1 1/4x1 1/4\"", "1 1/2x1 1/2\""] },
+    ],
+  },
+  {
+    category: "APVC Material",
+    items: [
+      { name: "APVC Plain Pipe", sizes: ["½\"", "¾\"", "1\"", "1¼\"", "1½\"", "2\"", "2½\"", "3\"", "4\""] },
+      { name: "APVC Pressure Pipe", sizes: ["½\"", "¾\"", "1\"", "1¼\"", "1½\"", "2\""] },
+      { name: "APVC SWR Pipe", sizes: ["75mm", "90mm", "110mm", "160mm", "200mm"] },
+      { name: "APVC Electrical Conduit Pipe", sizes: ["16mm", "20mm", "25mm", "32mm"] },
+    ],
+  },
+  {
+    category: "Other",
+    items: [
+      { name: "Coupling / Socket", sizes: ["½\" to 4\""] },
+      { name: "Reducer Coupling", sizes: ["1\"x½\"", "2\"x1\"", "etc."] },
+      { name: "Elbow 90°", sizes: ["½\" to 4\""] },
+      { name: "Elbow 45°", sizes: ["½\" to 4\""] },
+      { name: "Tee (Equal)", sizes: ["½\" to 4\""] },
+      { name: "Reducing Tee", sizes: ["1\"x½\"x1\"", "etc."] },
+      { name: "Cross", sizes: ["½\" to 4\""] },
+      { name: "Union", sizes: ["½\" to 4\""] },
+      { name: "End Cap", sizes: ["½\" to 4\""] },
+      { name: "Male Thread Adapter (MTA)", sizes: ["½\" to 4\""] },
+      { name: "Female Thread Adapter (FTA)", sizes: ["½\" to 4\""] },
+      { name: "Bushy / Reducer Bush", sizes: ["¾\"x½\"", "etc."] },
+      { name: "Ball Valve", sizes: ["½\" to 2\""] },
+      { name: "Gate Valve", sizes: ["½\" to 2\""] },
+      { name: "Check Valve", sizes: ["½\" to 2\""] },
+      { name: "Trap (P-Trap / S-Trap)", sizes: ["75mm", "110mm"] },
+      { name: "Vent Cowl", sizes: ["75mm", "110mm"] },
+      { name: "Clean Out Plug", sizes: ["75mm", "110mm"] },
+      { name: "Flange", sizes: ["63mm", "90mm", "110mm", "160mm"] },
+      { name: "Clamp / Saddle", sizes: ["½\" to 4\""] },
+    ],
+  },
+];

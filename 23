@@ -1,0 +1,38 @@
+import { SavedBill } from '../App';
+
+export const shareBill = async (bill: SavedBill) => {
+  let shareText = `*IRHA PLUMBING WORK - Material List*\n\n`;
+  shareText += `*Material No:* ${bill.listNumber}\n`;
+  shareText += `*Customer:* ${bill.customerName || 'N/A'}\n`;
+  shareText += `*Date:* ${bill.date}\n\n`;
+  shareText += `*--- Materials ---*\n`;
+
+  bill.materials.forEach((item, index) => {
+    shareText += `${index + 1}. ${item.name}`;
+    if (item.size) {
+      shareText += ` (${item.size})`;
+    }
+    shareText += ` - Qty: ${item.quantity}\n`;
+  });
+
+  shareText += `\nContact: 8698913157 | 8668849919`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: `Material List - ${bill.listNumber}`,
+        text: shareText,
+      });
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  } else {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      alert('Material list copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      alert('Failed to copy list to clipboard. Please copy it manually.');
+    }
+  }
+};
